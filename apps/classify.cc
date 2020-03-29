@@ -5,9 +5,15 @@
 #include <bayes/model.h>
 #include <gflags/gflags.h>
 
-#include <string>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
+#include <string>
+
+using std::ifstream;
+using std::cout;
+using std::endl;
+
 
 
 // TODO(you): Change the code below for your project use case.
@@ -29,6 +35,21 @@ int main(int argc, char** argv) {
 
   const std::string puncutation = FLAGS_happy ? "!" : ".";
 
-  std::cout << "Hello, " << FLAGS_name << puncutation << std::endl;
+  cout << "Hello, " << FLAGS_name << puncutation << endl;
+
+    ifstream test_stream(argv[1]);
+    if (test_stream.fail()) {
+        cout << "No files to test" << endl;
+    }
+
+    ifstream model_stream("data/model.txt");
+    if (!model_stream.good()) {
+      bayes::Model model;
+      model.trainModel();
+
+    }
+
+
+
   return EXIT_SUCCESS;
 }

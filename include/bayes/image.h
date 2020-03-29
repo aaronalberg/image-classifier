@@ -4,6 +4,9 @@
 #define BAYES_IMAGE_H_
 
 #include <cstdlib>
+#include <vector>
+
+using std::vector;
 
 
 namespace bayes {
@@ -19,9 +22,15 @@ namespace bayes {
 
 constexpr size_t kImageSize = 28;
 
-class Image {
+struct Image {
+  int trainingClass;
+  vector<vector<int>> pixels;
+ public:
+  explicit Image(vector<vector<int>>&);
+  Image(vector<vector<int>>&, int);
  private:
-  char pixels_[kImageSize][kImageSize];
+  //char pixels_[kImageSize][kImageSize];
+
 };
 
 }  // namespace bayes

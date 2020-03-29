@@ -3,12 +3,28 @@
 #ifndef BAYES_MODEL_H_
 #define BAYES_MODEL_H_
 
-#include "image.h"
-
+#include <bayes/image.h>
+#include <nlohmann/json.hpp>
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+using std::cout;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+using std::ifstream;
+using std::stoi;
 
 
 namespace bayes {
+
+
+
 
 /*
  * We've given you a starter struct to represent the model.
@@ -38,6 +54,7 @@ constexpr size_t kNumShades = 2;
  * white or black.
  */
 class Model {
+
   // The individual probabilities for each pixel for each class for
   // whether it's shaded or not.
   //
@@ -48,7 +65,12 @@ class Model {
   // probs[0][0][0][1] is the computed probability that a pixel at
   // [0][0] for class 0 is shaded.
  private:
-  double probs_[kImageSize][kImageSize][kNumClasses][kNumShades];
+  double probs_ [kImageSize][kImageSize][kNumClasses][kNumShades];
+  vector<vector<int>> grid;
+  vector<bayes::Image> readTrainingFiles();
+
+ public:
+  void trainModel();
 };
 
 }  // namespace bayes
