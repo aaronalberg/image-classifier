@@ -47,6 +47,7 @@ namespace bayes {
 constexpr size_t kNumClasses = 10;
 // Shaded or not shaded.
 constexpr size_t kNumShades = 2;
+constexpr size_t kLaplaceSmoother = 1;
 
 /**
  * Represents a Naive Bayes classification model for determining the
@@ -68,6 +69,8 @@ class Model {
   double probs_ [kImageSize][kImageSize][kNumClasses][kNumShades];
   vector<vector<int>> grid;
   vector<bayes::Image> readTrainingFiles();
+  int image_count_;
+  vector<int> class_count_;
 
  public:
   void trainModel();

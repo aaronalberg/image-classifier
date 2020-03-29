@@ -6,6 +6,10 @@ namespace bayes {
 
 void Model::trainModel() {
   vector<bayes::Image> images = readTrainingFiles();
+  std::cout << image_count_ << endl;
+  std::cout << class_count_[0] << endl;
+
+
 
 }
 
@@ -23,6 +27,7 @@ vector<bayes::Image> Model::readTrainingFiles() {
   int line_count = 0;
   vector<bayes::Image> images;
   grid.assign(kImageSize, vector<int>(kImageSize, 1));
+  class_count_.assign(kNumClasses,0);
 
   while (getline (training_images_, next_line_images)) {
 
@@ -41,8 +46,12 @@ vector<bayes::Image> Model::readTrainingFiles() {
 
 
     if (line_count % kImageSize == 0 && line_count != 0) {
+      image_count_++;
       getline(training_labels_, next_line_labels);
       label_value = stoi(next_line_labels);
+      std::cout << "label " << label_value << endl;
+      class_count_[label_value] ++;
+      std::cout << "yuh " << class_count_[label_value] << endl;
       bayes::Image current_image(grid, label_value);
       images.push_back(current_image);
     }
