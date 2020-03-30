@@ -19,6 +19,7 @@ using std::string;
 using std::vector;
 using std::ifstream;
 using std::stoi;
+using std::ofstream;
 
 
 namespace bayes {
@@ -47,7 +48,7 @@ namespace bayes {
 constexpr size_t kNumClasses = 10;
 // Shaded or not shaded.
 constexpr size_t kNumShades = 2;
-constexpr size_t kLaplaceSmoother = 1;
+constexpr size_t kLaplace = 1;
 
 /**
  * Represents a Naive Bayes classification model for determining the
@@ -70,7 +71,7 @@ class Model {
   vector<vector<int>> grid;
   vector<bayes::Image> readTrainingFiles();
   int image_count_;
-  vector<int> class_count_;
+  vector<double> class_proportion_;
 
  public:
   void trainModel();

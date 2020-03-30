@@ -18,7 +18,7 @@ using std::endl;
 
 // TODO(you): Change the code below for your project use case.
 
-DEFINE_string(name, "Clarice", "Your first name");
+DEFINE_string(name, "Aaron", "Your first name");
 DEFINE_bool(happy, false, "Whether the greeting is a happy greeting");
 
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
         cout << "No files to test" << endl;
     }
 
-    ifstream model_stream("data/model.txt");
+    ifstream model_stream("model.txt");
     if (!model_stream.good()) {
       bayes::Model model;
       model.trainModel();
