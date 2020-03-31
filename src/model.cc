@@ -5,11 +5,11 @@
 namespace bayes {
 
 void Model::trainModel() {
-  vector<bayes::Image> images = readTrainingFiles();
+  vector<Image> images = parseTrainingFiles();
   pixel_proportions.assign(kNumClasses,
       vector<vector<double>>(kImageSize, vector<double>(kImageSize)));
   vector<vector<vector<int>>> class_count(kNumClasses, vector<vector<int>>(kImageSize, vector<int>(kImageSize)));
-  for (bayes::Image &image : images) {
+  for (Image &image : images) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
        if (image.pixels[i][j] == 1) {
@@ -49,16 +49,15 @@ void Model::trainModel() {
   model.close();
 }
 
-vector<bayes::Image> Model::readTrainingFiles() {
+vector<Image> Model::parseTrainingFiles() {
   ifstream training_images_("data/digitdata/trainingimages");
   ifstream training_labels_("data/digitdata/traininglabels");
 
-  string next_line_images;
-  string next_line_labels;
+  string next_line_images, next_line_labels;
   int label_value;
   int line_count = 1;
-  vector<bayes::Image> images;
-  grid.assign(kImageSize, vector<int>(kImageSize, 1));
+  vector<Image> images;
+  vector<vector<int>> grid(kImageSize, vector<int>(kImageSize, 1));
   class_proportion_.assign(kNumClasses,0);
 
   while (getline (training_images_, next_line_images)) {
@@ -71,7 +70,7 @@ vector<bayes::Image> Model::readTrainingFiles() {
       getline(training_labels_, next_line_labels);
       label_value = stoi(next_line_labels);
       class_proportion_[label_value] ++;
-      bayes::Image current_image(grid, label_value);
+      Image current_image(grid, label_value);
       images.push_back(current_image);
     }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2020 [Your Name]. All rights reserved.
+// Copyright (c) 2020 Aaron Alberg. All rights reserved.
 
 #ifndef BAYES_MODEL_H_
 #define BAYES_MODEL_H_
@@ -38,8 +38,7 @@ constexpr double kLaplace = 1.0;
 class Model {
 
  private:
-  vector<vector<int>> grid;
-  vector<bayes::Image> readTrainingFiles();
+  vector<bayes::Image> parseTrainingFiles();
   int image_count_;
   vector<double> class_proportion_;
   vector<vector<vector<double>>> pixel_proportions;

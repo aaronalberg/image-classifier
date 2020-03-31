@@ -1,4 +1,4 @@
-// Copyright (c) 2020 [Your Name]. All rights reserved.
+// Copyright (c) 2020 Aaron Alberg. All rights reserved.
 
 #include <bayes/classifier.h>
 #include <bayes/image.h>
@@ -15,7 +15,7 @@ using std::endl;
 using namespace bayes;
 
 
-vector<bayes::Image> readTestFiles(string images_path, string labels_path) {
+vector<Image> parseFiles(const string& images_path, const string& labels_path) {
   ifstream testing_images_(images_path);
   ifstream testing_labels_(labels_path);
 
@@ -23,7 +23,7 @@ vector<bayes::Image> readTestFiles(string images_path, string labels_path) {
   string next_line_labels;
   int label_value;
   int line_count = 1;
-  vector<bayes::Image> images;
+  vector<Image> images;
   vector<vector<int>> grid;
   grid.assign(kImageSize, vector<int>(kImageSize, 1));
 
@@ -79,13 +79,12 @@ vector<double> splitPixelProportions(string &line) {
   return row;
 }
 
-vector<vector<vector<double>>>
-    generateProportionGrids(ifstream &model_stream, string &line) {
+vector<vector<vector<double>>> makeProportionGrids(ifstream &stream, string &line) {
   vector<vector<vector<double>>> pixel_proportions;
   for (int i = 0; i < kNumClasses; i++) {
     vector<vector<double>> grid;
     for (int j = 0; j < kImageSize; j++) {
-      getline(model_stream, line);
+      getline(stream, line);
       vector<double> row = splitPixelProportions(line);
       grid.push_back(row);
     }
@@ -98,11 +97,11 @@ vector<vector<vector<double>>>
 
 
 int main(int argc, char** argv) {
-
   ifstream model_stream("model.txt");
   if (!model_stream.good()) {
-    bayes::Model model;
+    Model model;
     model.trainModel();
+    model_stream.close();
   }
 
   ifstream model("model.txt");
@@ -110,15 +109,15 @@ int main(int argc, char** argv) {
   getline(model, next_line);
   vector<double> class_proportions = splitClassProportions(next_line);
   vector<vector<vector<double>>> pixel_proportions =
-      generateProportionGrids(model, next_line);
-  vector<bayes::Image> imagesToTest =
-      readTestFiles(argv[1], argv[2]);
-  int image_count = 0;
-  int correct_count = 0;
-  for (bayes::Image &image : imagesToTest) {
+      makeProportionGrids(model, next_line);
+
+  vector<Image> test_images =
+      parseFiles(argv[1], argv[2]);
+  int image_count = 0, correct_count = 0;
+  for (Image &image : test_images) {
     image_count++;
     int return_class =
-        bayes::classifyImage(image, class_proportions, pixel_proportions);
+        classifyImage(image, class_proportions, pixel_proportions);
     if (return_class == image.number_class) {
       correct_count++;
     }
