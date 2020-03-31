@@ -6,13 +6,29 @@ namespace bayes {
 
 void Model::trainModel() {
   vector<bayes::Image> images = readTrainingFiles();
-  proportions.assign(kNumClasses, vector<vector<double>>(kImageSize, vector<double>(kImageSize)));
+  pixel_proportions.assign(kNumClasses,
+      vector<vector<double>>(kImageSize, vector<double>(kImageSize)));
+  vector<vector<vector<int>>> class_count(kNumClasses, vector<vector<int>>(kImageSize, vector<int>(kImageSize)));
   for (bayes::Image &image : images) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
        if (image.pixels[i][j] == 1) {
-         proportions[image.number_class][i][j]++;
+         pixel_proportions[image.number_class][i][j]++;
        }
+        class_count[image.number_class][i][j]++;
+      }
+    }
+  }
+
+  for (int num = 0; num < kNumClasses; num++) {
+    for (int i = 0; i < kImageSize; i++) {
+      for (int j = 0; j < kImageSize; j++) {
+        std::cout << "num " << num << endl;
+        std::cout << pixel_proportions[num][i][j] << endl;
+        //std::cout << class_count[num] << endl;
+
+        pixel_proportions[num][i][j] =
+            pixel_proportions[num][i][j] / class_count[num][i][j];
       }
     }
   }
@@ -23,7 +39,7 @@ void Model::trainModel() {
   }
 
   model << endl;
-  for (vector<vector<double>> &vec : proportions) {
+  for (vector<vector<double>> &vec : pixel_proportions) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
         model << vec[i][j] << " ";
@@ -32,20 +48,8 @@ void Model::trainModel() {
       model << endl;
     }
   }
+
   model.close();
-
-  /*
-
-  for (vector<vector<double>> &field : proportions) {
-    for (int i = 0; i < kImageSize; i++) {
-      for (int j = 0; j < kImageSize; j++) {
-        field[i][j] = (field[i][j] + kLaplace) / (kLaplace + image_count_);
-        field[i][j] = log(field[i][j]);
-      }
-    }
-  }
-   */
-
 }
 
 vector<bayes::Image> Model::readTrainingFiles() {

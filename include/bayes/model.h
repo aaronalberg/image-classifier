@@ -62,7 +62,7 @@ class Model {
   vector<bayes::Image> readTrainingFiles();
   int image_count_;
   vector<double> class_proportion_;
-  vector<vector<vector<double>>> proportions;
+  vector<vector<vector<double>>> pixel_proportions;
 
  public:
   void trainModel();

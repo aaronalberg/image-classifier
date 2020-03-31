@@ -17,7 +17,7 @@ using std::stod;
 
 namespace bayes {
 
-int classifyImage(Image&, vector<double>, vector<vector<vector<int>>>);
+int classifyImage(Image&, vector<double>&, vector<vector<vector<double>>>&);
 
 }  // namespace bayes
 

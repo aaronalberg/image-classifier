@@ -4,12 +4,16 @@
 
 namespace bayes {
 
-int classifyImage(Image &image, vector<double> class_proportions,
-    vector<vector<vector<int>>> proportions) {
+int classifyImage(Image &image, vector<double> &class_proportions,
+    vector<vector<vector<double>>> &pixel_proportions) {
 
+  for (int i = 0; i < kImageSize; i++) {
+    for (int j = 0; j < kImageSize; j++) {
 
+    }
+  }
 
-  return 11;
+  return 1;
 }
 
 

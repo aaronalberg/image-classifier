@@ -74,8 +74,8 @@ vector<double> splitClassProportions(string &line) {
   return proportions;
 }
 
-vector<int> splitPixelProportions(string &line) {
-  vector<int> row;
+vector<double> splitPixelProportions(string &line) {
+  vector<double> row;
   istringstream sstream(line);
   int count_iteration = 0;
   while (sstream && count_iteration < kImageSize) {
@@ -88,18 +88,18 @@ vector<int> splitPixelProportions(string &line) {
   return row;
 }
 
-vector<vector<vector<int>>>
+vector<vector<vector<double>>>
     generateProportionGrids(ifstream &model_stream, string &line) {
-  vector<vector<vector<int>>> proportions;
+  vector<vector<vector<double>>> pixel_proportions;
   for (int i = 0; i < kNumClasses; i++) {
-    vector<vector<int>> grid;
+    vector<vector<double>> grid;
     for (int j = 0; j < kImageSize; j++) {
       getline(model_stream, line);
-      vector<int> row = splitPixelProportions(line);
+      vector<double> row = splitPixelProportions(line);
       grid.push_back(row);
     }
 
-    proportions.push_back(grid);
+    pixel_proportions.push_back(grid);
   }
   while (getline(model_stream, line)) {
     istringstream stream(line);
@@ -108,7 +108,7 @@ vector<vector<vector<int>>>
 
   }
 
-  return proportions;
+  return pixel_proportions;
 }
 
 
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
   string next_line;
   getline(model, next_line);
   vector<double> class_proportions = splitClassProportions(next_line);
-  vector<vector<vector<int>>> proportions =
+  vector<vector<vector<double>>> pixel_proportions =
       generateProportionGrids(model, next_line);
   vector<bayes::Image> imagesToTest =
       readTestFiles(argv[1], argv[2]);
@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
   for (bayes::Image &image : imagesToTest) {
     image_count++;
     int return_class =
-        bayes::classifyImage(image, class_proportions, proportions);
+        bayes::classifyImage(image, class_proportions, pixel_proportions);
     if (return_class == image.number_class) {
       correct_count++;
     }
@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
 
   cout << "RESULTS" << endl;
   cout << "Image count: " << image_count << endl;
-  cout << (correct_count / image_count) << "% correct" << endl;
+  cout << ((double) correct_count / (double) image_count) * 100 << "% correct" << endl;
 
   return EXIT_SUCCESS;
 }
