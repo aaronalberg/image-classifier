@@ -23,13 +23,11 @@ namespace bayes {
 constexpr size_t kImageSize = 28;
 
 struct Image {
-  int trainingClass;
+  int number_class;
   vector<vector<int>> pixels;
  public:
   explicit Image(vector<vector<int>>&);
   Image(vector<vector<int>>&, int);
- private:
-  //char pixels_[kImageSize][kImageSize];
 
 };
 

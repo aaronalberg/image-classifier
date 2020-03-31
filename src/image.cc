@@ -10,7 +10,7 @@ Image::Image(vector<vector<int>> &grid) {
 
 Image::Image(vector<vector<int>> &grid, int value) {
   pixels = grid;
-  trainingClass = value;
+  number_class = value;
 }
 
 }  // namespace bayes

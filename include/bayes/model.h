@@ -57,24 +57,16 @@ constexpr size_t kLaplace = 1;
  */
 class Model {
 
-  // The individual probabilities for each pixel for each class for
-  // whether it's shaded or not.
-  //
-  // Examples:
-  // probs[2][10][7][0] is the computed probability that a pixel at
-  // [2][10] for class 7 is not shaded.
-  //
-  // probs[0][0][0][1] is the computed probability that a pixel at
-  // [0][0] for class 0 is shaded.
  private:
-  double probs_ [kImageSize][kImageSize][kNumClasses][kNumShades];
   vector<vector<int>> grid;
   vector<bayes::Image> readTrainingFiles();
   int image_count_;
   vector<double> class_proportion_;
+  vector<vector<vector<double>>> proportions;
 
  public:
   void trainModel();
+  static vector<int> prepareRow(string&);
 };
 
 }  // namespace bayes
