@@ -23,12 +23,9 @@ void Model::trainModel() {
   for (int num = 0; num < kNumClasses; num++) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
-        std::cout << "num " << num << endl;
-        std::cout << pixel_proportions[num][i][j] << endl;
-        //std::cout << class_count[num] << endl;
-
-        pixel_proportions[num][i][j] =
-            pixel_proportions[num][i][j] / class_count[num][i][j];
+        double laplace_one = (kLaplace + pixel_proportions[num][i][j]);
+        double laplace_two = (2 * kLaplace) + class_count[num][i][j];
+        pixel_proportions[num][i][j] = laplace_one / laplace_two;
       }
     }
   }

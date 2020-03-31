@@ -3,7 +3,6 @@
 #include <bayes/classifier.h>
 #include <bayes/image.h>
 #include <bayes/model.h>
-#include <gflags/gflags.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -14,16 +13,6 @@ using std::ifstream;
 using std::cout;
 using std::endl;
 using namespace bayes;
-
-
-
-// TODO(you): Change the code below for your project use case.
-
-DEFINE_string(name, "Aaron", "Your first name");
-DEFINE_bool(happy, false, "Whether the greeting is a happy greeting");
-
-
-
 
 
 vector<bayes::Image> readTestFiles(string images_path, string labels_path) {
@@ -75,6 +64,8 @@ vector<double> splitClassProportions(string &line) {
 }
 
 vector<double> splitPixelProportions(string &line) {
+
+  //https://www.geeksforgeeks.org/split-a-sentence-into-words-in-cpp/
   vector<double> row;
   istringstream sstream(line);
   int count_iteration = 0;
@@ -82,7 +73,7 @@ vector<double> splitPixelProportions(string &line) {
     count_iteration++;
     string word;
     sstream >> word;
-    row.push_back(stoi(word));
+    row.push_back(stod(word));
   }
 
   return row;
@@ -101,30 +92,12 @@ vector<vector<vector<double>>>
 
     pixel_proportions.push_back(grid);
   }
-  while (getline(model_stream, line)) {
-    istringstream stream(line);
-    vector<int> row;
-
-
-  }
 
   return pixel_proportions;
 }
 
 
 int main(int argc, char** argv) {
-  gflags::SetUsageMessage(
-      "Greets you with your name. Pass --helpshort for options.");
-
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-
-  if (FLAGS_name.empty()) {
-    std::cerr << "Please provide a name via the --name flag." << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  const std::string puncutation = FLAGS_happy ? "!" : ".";
-  cout << "Hello, " << FLAGS_name << puncutation << endl;
 
   ifstream model_stream("model.txt");
   if (!model_stream.good()) {
@@ -150,11 +123,10 @@ int main(int argc, char** argv) {
       correct_count++;
     }
   }
-  model.close();
 
+  model.close();
   cout << "RESULTS" << endl;
   cout << "Image count: " << image_count << endl;
   cout << ((double) correct_count / (double) image_count) * 100 << "% correct" << endl;
-
   return EXIT_SUCCESS;
 }
