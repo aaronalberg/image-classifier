@@ -25,12 +25,12 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Allow code coverage.
 if("{CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-    OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-  message("Building with llvm Code Coverage Tools")
-  set(CMAKE_CXX_FLAGS "-fprofile-instr-generate -fcoverage-mapping")
+        OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
+    message("Building with llvm Code Coverage Tools")
+    set(CMAKE_CXX_FLAGS "-fprofile-instr-generate -fcoverage-mapping")
 elseif(CMAKE_COMPILER_IS_GNUCXX)
-  message("Building with lcov Code Coverage Tools")
-  set(CMAKE_CXX_FLAGS "--coverage")
+    message("Building with lcov Code Coverage Tools")
+    set(CMAKE_CXX_FLAGS "--coverage")
 endif()
 
 # Docs only available if this is the main app
@@ -64,22 +64,22 @@ add_subdirectory(tests)
 
 # Testing library. Header-only.
 FetchContent_Declare(
-    catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG        v2.11.1
+        catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG        v2.11.1
 )
 
 # Command-line parsing library
 FetchContent_Declare(
-    gflags
-    GIT_REPOSITORY https://github.com/gflags/gflags.git
-    GIT_TAG        v2.2.2
+        gflags
+        GIT_REPOSITORY https://github.com/gflags/gflags.git
+        GIT_TAG        v2.2.2
 )
 
 # JSON Library. Header-only.
 FetchContent_Declare(
-    nlohmann_json
-    URL https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip
+        nlohmann_json
+        URL https://github.com/nlohmann/json/releases/download/v3.7.3/include.zip
 )
 
 # Adds catch2 library.
@@ -105,4 +105,3 @@ if(NOT nlohmann_json_POPULATED)
     add_library(nlohmann_json INTERFACE)
     target_include_directories(nlohmann_json INTERFACE ${nlohmann_json_SOURCE_DIR}/single_include)
 endif()
-

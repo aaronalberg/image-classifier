@@ -16,6 +16,7 @@ void Model::trainModel() {
          pixel_proportions[image.number_class][i][j]++;
        }
         class_count[image.number_class][i][j]++;
+
       }
     }
   }
@@ -30,6 +31,10 @@ void Model::trainModel() {
     }
   }
 
+  writeModelFile();
+}
+
+void Model::writeModelFile() {
   ofstream model("model.txt");
   for (int i = 0; i < kNumClasses; i++) {
     model << class_proportion_[i] << " ";

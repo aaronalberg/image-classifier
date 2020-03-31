@@ -108,16 +108,12 @@ int main(int argc, char** argv) {
   string next_line;
   getline(model, next_line);
   vector<double> class_proportions = splitClassProportions(next_line);
-  vector<vector<vector<double>>> pixel_proportions =
-      makeProportionGrids(model, next_line);
-
-  vector<Image> test_images =
-      parseFiles(argv[1], argv[2]);
+  vector<vector<vector<double>>> pixel_proportions = makeProportionGrids(model, next_line);
+  vector<Image> test_images = parseFiles(argv[1], argv[2]);
   int image_count = 0, correct_count = 0;
   for (Image &image : test_images) {
     image_count++;
-    int return_class =
-        classifyImage(image, class_proportions, pixel_proportions);
+    int return_class = classifyImage(image, class_proportions, pixel_proportions);
     if (return_class == image.number_class) {
       correct_count++;
     }

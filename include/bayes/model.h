@@ -4,7 +4,6 @@
 #define BAYES_MODEL_H_
 
 #include <bayes/image.h>
-#include <nlohmann/json.hpp>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -12,7 +11,6 @@
 #include <vector>
 
 
-using std::cout;
 using std::cout;
 using std::endl;
 using std::string;
@@ -26,9 +24,7 @@ namespace bayes {
 
 // 0-9 inclusive.
 constexpr size_t kNumClasses = 10;
-// Shaded or not shaded.
-constexpr size_t kNumShades = 2;
-constexpr double kLaplace = 1.0;
+constexpr double kLaplace = .1;
 
 /**
  * Represents a Naive Bayes classification model for determining the
@@ -42,6 +38,7 @@ class Model {
   int image_count_;
   vector<double> class_proportion_;
   vector<vector<vector<double>>> pixel_proportions;
+  void writeModelFile();
 
  public:
   void trainModel();
