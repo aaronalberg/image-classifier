@@ -14,11 +14,12 @@ constexpr size_t kImageSize = 28;
 
 struct Image {
   Image(vector<vector<int>>&, int);
+  Image();
   int& getNumberClass();
   vector<vector<int>>& getPixels();
 
  private:
-  int number_class;
+  int number_class{};
   vector<vector<int>> pixels;
 
 };

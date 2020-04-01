@@ -9,6 +9,8 @@ Image::Image(vector<vector<int>> &grid, int value) {
   number_class = value;
 }
 
+Image::Image() = default;
+
 int& Image::getNumberClass() {
   return number_class;
 }
