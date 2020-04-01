@@ -9,5 +9,13 @@ Image::Image(vector<vector<int>> &grid, int value) {
   number_class = value;
 }
 
+int& Image::getNumberClass() {
+  return number_class;
+}
+
+vector<vector<int>>& Image::getPixels() {
+  return pixels;
+}
+
 }  // namespace bayes
 

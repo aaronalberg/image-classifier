@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-
 using std::cout;
 using std::endl;
 using std::string;
@@ -29,18 +28,18 @@ constexpr double kLaplace = .1;
 /**
  * Represents a Naive Bayes classification model for determining the
  * likelihood that an individual pixel for an individual class is
- * white or black.
+ * shaded
  */
 class Model {
 
  private:
   vector<bayes::Image> parseTrainingFiles();
-  int image_count_;
-  vector<double> class_proportion_;
-  vector<vector<vector<double>>> pixel_proportions;
+  vector<double> class_proportions_;
+  vector<vector<vector<double>>> pixel_proportions_;
   void writeModelFile();
 
  public:
+  int image_count_;
   void trainModel();
   static vector<int> prepareRow(string&);
 };

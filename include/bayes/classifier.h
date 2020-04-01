@@ -21,8 +21,13 @@ using std::vector;
 
 namespace bayes {
 
-int classifyImage(Image&, vector<double>&, vector<vector<vector<double>>>&);
-int findHighestIndex(vector<double>&);
+int ClassifyImage(Image&, vector<double>&, vector<vector<vector<double>>>&);
+int FindHighestIndex(vector<double>&);
+vector<vector<vector<double>>> MakeProportionGrids(ifstream&, string&);
+vector<double> SplitProportions(string&, int);
+vector<Image> ParseFiles(const string&, const string&);
+double ClassifyAllImages(string, string);
+
 }  // namespace bayes
 
 #endif  // BAYES_CLASSIFIER_H_

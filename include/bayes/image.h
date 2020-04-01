@@ -8,15 +8,18 @@
 
 using std::vector;
 
-
 namespace bayes {
 
 constexpr size_t kImageSize = 28;
 
 struct Image {
+  Image(vector<vector<int>>&, int);
+  int& getNumberClass();
+  vector<vector<int>>& getPixels();
+
+ private:
   int number_class;
   vector<vector<int>> pixels;
-  Image(vector<vector<int>>&, int);
 
 };
 

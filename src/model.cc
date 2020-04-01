@@ -6,17 +6,17 @@ namespace bayes {
 
 void Model::trainModel() {
   vector<Image> images = parseTrainingFiles();
-  pixel_proportions.assign(kNumClasses,
+  pixel_proportions_.assign(kNumClasses,
       vector<vector<double>>(kImageSize, vector<double>(kImageSize)));
   vector<vector<vector<int>>> class_count(kNumClasses, vector<vector<int>>(kImageSize, vector<int>(kImageSize)));
   for (Image &image : images) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
-       if (image.pixels[i][j] == 1) {
-         pixel_proportions[image.number_class][i][j]++;
+       if (image.getPixels()[i][j] == 1) {
+         pixel_proportions_[image.getNumberClass()][i][j]++;
        }
-        class_count[image.number_class][i][j]++;
 
+        class_count[image.getNumberClass()][i][j]++;
       }
     }
   }
@@ -24,9 +24,9 @@ void Model::trainModel() {
   for (int num = 0; num < kNumClasses; num++) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
-        double laplace_one = (kLaplace + pixel_proportions[num][i][j]);
+        double laplace_one = (kLaplace + pixel_proportions_[num][i][j]);
         double laplace_two = (2 * kLaplace) + class_count[num][i][j];
-        pixel_proportions[num][i][j] = laplace_one / laplace_two;
+        pixel_proportions_[num][i][j] = laplace_one / laplace_two;
       }
     }
   }
@@ -37,11 +37,11 @@ void Model::trainModel() {
 void Model::writeModelFile() {
   ofstream model("model.txt");
   for (int i = 0; i < kNumClasses; i++) {
-    model << class_proportion_[i] << " ";
+    model << class_proportions_[i] << " ";
   }
 
   model << endl;
-  for (vector<vector<double>> &vec : pixel_proportions) {
+  for (vector<vector<double>> &vec : pixel_proportions_) {
     for (int i = 0; i < kImageSize; i++) {
       for (int j = 0; j < kImageSize; j++) {
         model << vec[i][j] << " ";
@@ -55,18 +55,15 @@ void Model::writeModelFile() {
 }
 
 vector<Image> Model::parseTrainingFiles() {
-  ifstream training_images_("data/digitdata/trainingimages");
-  ifstream training_labels_("data/digitdata/traininglabels");
+  ifstream training_images_("/Users/aaronalberg/CLionProjects/naive-bayes-aaronalberg/data/digitdata/trainingimages");
+  ifstream training_labels_("/Users/aaronalberg/CLionProjects/naive-bayes-aaronalberg/data/digitdata/traininglabels");
 
   string next_line_images, next_line_labels;
-  int label_value;
-  int line_count = 1;
+  int label_value, line_count = 1;
   vector<Image> images;
   vector<vector<int>> grid(kImageSize, vector<int>(kImageSize, 1));
-  class_proportion_.assign(kNumClasses,0);
-
+  class_proportions_.assign(kNumClasses,0);
   while (getline (training_images_, next_line_images)) {
-
     vector<int> row = prepareRow(next_line_images);
     grid[line_count % kImageSize] = row;
 
@@ -74,7 +71,7 @@ vector<Image> Model::parseTrainingFiles() {
       image_count_++;
       getline(training_labels_, next_line_labels);
       label_value = stoi(next_line_labels);
-      class_proportion_[label_value] ++;
+      class_proportions_[label_value] ++;
       Image current_image(grid, label_value);
       images.push_back(current_image);
     }
@@ -84,8 +81,8 @@ vector<Image> Model::parseTrainingFiles() {
 
   training_images_.close();
   training_labels_.close();
-  for (double &class_entry : class_proportion_) {
-    class_entry = class_entry / image_count_;
+  for (double &class_entry : class_proportions_) {
+    class_entry /= image_count_;
   }
 
   return images;
